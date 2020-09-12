@@ -1,0 +1,38 @@
+{% extends "recipes/layout.html"%}
+
+{% block content %}
+
+  <h2>{{ recipe.name }}</h2>
+
+  <div class="article-metadata">
+    <a href="#">by {{ recipe.author }}</a>
+    <small class="recipe-month">{{ recipe.month_posted }}</small><br>
+    <p>"{{ recipe.description }}"</p>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="ingredients-section">
+          <h4>Ingredients</h4>
+          <ul>
+            {% for ingredient in recipe.ingredients %}
+              <li>{{ ingredient|title }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="method-section">
+            <h4>Directions</h4>
+            <div class="">
+              <p>{{ recipe.method|linebreaks }}</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
