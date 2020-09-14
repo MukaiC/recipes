@@ -1,6 +1,13 @@
 {% extends "recipes/layout.html" %}
 
 {% block content %}
+  {% if message == 'results' %}
+    <div class="container search-section">
+      <h1>Search results for "{{ search_for }}"</h1>
+      <p> Showing {{ recipes|length }} results</p>
+    </div>
+  {% endif %}
+
   {% for recipe in recipes %}
     <article class="media content-section">
       <div class="media-body">
@@ -12,6 +19,7 @@
         <p class="article-content">{{ recipe.description }}</p>
       </div>
     </article>
+
   {% endfor %}
 {% endblock %}
 

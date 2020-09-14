@@ -52,8 +52,8 @@
             <!-- <h3>Sidebar</h3> -->
 
           <div class="search-section">
-            <form action="#" method="get" class="form-inline">
-              <input class="form-control mr-2" type="text" placeholder="Search" aria-label="Search">
+            <form action="{% url 'recipes:search' %}" method="get" class="form-inline">
+              <input class="form-control mr-2" name="q" type="text" placeholder="Search" aria-label="Search">
               <i class="fa fa-search" aria-hidden="true"></i>
             </form>
           </div>

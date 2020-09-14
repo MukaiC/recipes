@@ -29,3 +29,19 @@ def recipe(request, recipe_id):
         'title': recipe.name
     }
     return render(request, 'recipes/recipe.html', context)
+
+def search(request):
+    results = []
+    # Get the search input
+    q = request.GET.get('q')
+    # Get recipes
+    recipes = Recipe.objects.all()
+    for recipe in recipes:
+        if q.lower() in recipe.name.lower():
+            results.append(recipe)
+    context = {
+        'message': 'results',
+        'search_for': q,
+        'recipes': [recipe.serialize_simple() for recipe in results]
+    }
+    return render(request, 'recipes/home.html', context)
