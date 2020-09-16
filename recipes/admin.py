@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'author', 'date_posted')
+    list_display = ('id', 'name', 'author', 'date_posted', 'header_image')
 
 class RecipeIngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'recipe', 'ingredient')

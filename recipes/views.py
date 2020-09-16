@@ -47,3 +47,6 @@ def search(request):
         'recipes': [recipe.serialize_simple() for recipe in results],
     }
     return render(request, 'recipes/home.html', context)
+
+# def login_view(request):
+#     return render(request, 'recipes/login.html')
