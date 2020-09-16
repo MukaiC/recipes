@@ -1,7 +1,7 @@
 {% extends "recipes/layout.html" %}
 
 {% block content %}
-  {% if message == 'results' %}
+  {% if results %}
     <div class="container search-section">
       <h1>Search results for "{{ search_for }}"</h1>
       <p> Showing {{ recipes|length }} results</p>

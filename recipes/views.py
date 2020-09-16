@@ -42,11 +42,8 @@ def search(request):
         if q.lower() in recipe.name.lower():
             results.append(recipe)
     context = {
-        'message': 'results',
+        'results': True,
         'search_for': q,
         'recipes': [recipe.serialize_simple() for recipe in results],
     }
     return render(request, 'recipes/home.html', context)
-
-# def login_view(request):
-#     return render(request, 'recipes/login.html')
