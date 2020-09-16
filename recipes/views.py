@@ -1,5 +1,6 @@
 # from django.conf import settings
 
+from django.contrib import messages
 from django.shortcuts import render
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
@@ -46,4 +47,5 @@ def search(request):
         'search_for': q,
         'recipes': [recipe.serialize_simple() for recipe in results],
     }
+    # messages.success(request, 'Your search result.')
     return render(request, 'recipes/home.html', context)
