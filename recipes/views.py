@@ -1,3 +1,5 @@
+# from django.conf import settings
+
 from django.shortcuts import render
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
@@ -42,6 +44,6 @@ def search(request):
     context = {
         'message': 'results',
         'search_for': q,
-        'recipes': [recipe.serialize_simple() for recipe in results]
+        'recipes': [recipe.serialize_simple() for recipe in results],
     }
     return render(request, 'recipes/home.html', context)

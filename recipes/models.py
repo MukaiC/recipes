@@ -17,9 +17,11 @@ class Recipe(models.Model):
     description = models.CharField(max_length=200, blank=True)
     method = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    header_image = models.ImageField(null=True, blank=True, upload_to='images/')
     num_serving = models.IntegerField(null=True)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     date_posted = models.DateTimeField(default=timezone.now)
+
 
     def serialize(self):
         return {
@@ -60,3 +62,10 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f"{self.ingredient} for {self.recipe} recipe"
+
+# class Image(models.Model):
+#     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='image')
+#     image = models.ImageField(upload_to='images', blank=True, )
+#
+#     def __str__(self):
+#         return self.recipe
