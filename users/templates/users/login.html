@@ -1,7 +1,19 @@
 {% extends "recipes/layout.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-  <h2>LogIn</h2>
-
-
+  <div class="container mb-4">
+    <form method="post">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Register</legend>
+          {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Log In</button>
+      </div>
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted">Need an Account?<a class="ml-2" href="{% url 'register' %}">Register</a></small>
+    </div>
+  </div>
 {% endblock %}

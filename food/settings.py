@@ -118,6 +118,9 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+LOGIN_REDIRECT_URL = 'recipes:index'
+
+
 try:
     from .local_settings import *
 except ImportError:
