@@ -120,6 +120,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'recipes:index'
 
+LOGIN_URL = 'login'
 
 try:
     from .local_settings import *
