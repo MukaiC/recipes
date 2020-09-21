@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from .forms import UserRegisterForm
+
+class MyLoginView(SuccessMessageMixin, LoginView):
+    success_message = 'You are now logged in!'
 
 def register(request):
     if request.method == 'POST':
@@ -18,6 +23,3 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
-
-# def login_view(request):
-#     return render(request, 'users/login.html')
