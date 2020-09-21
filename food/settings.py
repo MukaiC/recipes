@@ -122,6 +122,8 @@ LOGIN_REDIRECT_URL = 'recipes:index'
 
 LOGIN_URL = 'login'
 
+# LOGOUT_REDIRECT_URL = 'recipes:index'
+
 try:
     from .local_settings import *
 except ImportError:

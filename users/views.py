@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .forms import UserRegisterForm
 
 class MyLoginView(SuccessMessageMixin, LoginView):
@@ -19,6 +22,11 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You logged out successfully.')
+    return HttpResponseRedirect(reverse('recipes:index'))
 
 @login_required
 def profile(request):
