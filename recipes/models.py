@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
-
+# Cannot be moved to users.models.py mid-project due to dependancy issues
 class User(AbstractUser):
 
     def serialize(self):
