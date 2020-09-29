@@ -2,6 +2,7 @@
 
 from django.contrib import messages
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
 
@@ -12,26 +13,38 @@ from .models import User, Recipe, Ingredient, RecipeIngredient
 #     {'title': 'Simple green salad', 'subtitle': 'Learn how to make simple green salad.' ,'author': 'author 1', 'date_posted': 'Sept. 3 2020'},
 # ]
 
-def index(request):
-    # Query all recipes in a reverse chronological order
-    recipes = Recipe.objects.order_by('-date_posted')
-    context = {
-        # Serialize each recipe and put them in a list
-        'recipes': [recipe.serialize_simple() for recipe in recipes]
-    }
-    return render(request, 'recipes/home.html', context)
+# def index(request):
+#     # Query all recipes in a reverse chronological order
+#     recipes = Recipe.objects.order_by('-date_posted')
+#     context = {
+#         # Serialize each recipe and put them in a list
+#         'recipes': [recipe.serialize_simple() for recipe in recipes]
+#     }
+#     return render(request, 'recipes/home.html', context)
+
+class RecipesListView(ListView):
+    model = Recipe
+    template_name = 'recipes/home.html'
+    context_object_name = 'recipes'
+    ordering = ['-date_posted']
+
+class RecipesDetailView(DetailView):
+    model = Recipe
+    template_name = 'recipes/recipe.html'
+    context_object_name = 'recipe'
 
 
-def about(request):
-    return render(request, 'recipes/about.html', {'title': 'About'})
 
-def recipe(request, recipe_id):
-    recipe = Recipe.objects.get(id=recipe_id)
-    context = {
-        'recipe': recipe.serialize(),
-        'title': recipe.name
-    }
-    return render(request, 'recipes/recipe.html', context)
+
+# def recipe(request, recipe_id):
+#     recipe = Recipe.objects.get(id=recipe_id)
+#     context = {
+#         'recipe': recipe.serialize(),
+#         'title': recipe.name
+#     }
+#     return render(request, 'recipes/recipe.html', context)
+
+
 
 def search(request):
     results = []
@@ -49,3 +62,6 @@ def search(request):
     }
     # messages.success(request, 'Your search result.')
     return render(request, 'recipes/home.html', context)
+
+def about(request):
+    return render(request, 'recipes/about.html', {'title': 'About'})

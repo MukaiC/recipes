@@ -16,7 +16,7 @@
         <div class="ingredients-section">
           <h4>Ingredients</h4>
           <ul>
-            {% for ingredient in recipe.ingredients %}
+            {% for ingredient in recipe.ingredients.all %}
               <li>{{ ingredient|title }}</li>
             {% endfor %}
           </ul>
