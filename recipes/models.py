@@ -3,6 +3,17 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
+UNIT_CHOICES =  [
+    ('', 'Select a unit'),
+    ('tbs', 'tbs'),
+    ('tsp', 'tsp'),
+    ('cup', 'cup'),
+    ('g', 'g'),
+    ('kg','kg'),
+    ('ml', 'ml'),
+    ('l', 'litre')
+]
+
 # Cannot be moved to users.models.py mid-project due to dependancy issues
 class User(AbstractUser):
 
@@ -57,7 +68,7 @@ class Ingredient(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='recipeingredients')
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE, related_name='recipeingredients')
-    unit = models.CharField(max_length=30, blank=True)
+    unit = models.CharField(max_length=30, blank=True, choices=UNIT_CHOICES)
     amount = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
