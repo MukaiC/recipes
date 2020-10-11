@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 UNIT_CHOICES =  [
-    ('', 'Select a unit'),
+    ('NA', 'Select a unit'),
     ('tbs', 'tbs'),
     ('tsp', 'tsp'),
     ('cup', 'cup'),
@@ -58,6 +59,8 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('recipes:recipe', kwargs={'pk':self.pk})
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)

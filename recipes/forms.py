@@ -5,6 +5,7 @@ from .models import User, Recipe, Ingredient, RecipeIngredient
 class RecipeCreateForm(forms.ModelForm):
     class Meta:
         model = Recipe
+        # exclude = ['author', 'date_posted']
         exclude = ['author', 'ingredients', 'date_posted']
         labels = {
             'name': 'Title'
@@ -27,12 +28,12 @@ class RecipeIngredientForm(forms.ModelForm):
             'class': 'form-control'
         }
 
-    def clean_ingredient(self):
-        ingredient = self.form.cleaned_data['ingredient']
-        if ingredient not in Ingredient.objects.all():
-            new_ingredient = Ingredient.objects.create(name=ingredient)
-            new_ingredient.save()
-        return self.cleaned_data
+    # def clean_ingredient(self):
+    #     ingredient = self.form.cleaned_data['ingredient']
+    #     if ingredient not in Ingredient.objects.all():
+    #         new_ingredient = Ingredient.objects.create(name=ingredient)
+    #         new_ingredient.save()
+    #     return self.cleaned_data
 
 
-RecipeIngredientFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientForm, extra=3)
+RecipeIngredientFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientForm, extra=2, can_delete=False)
