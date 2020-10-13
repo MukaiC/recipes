@@ -3,26 +3,33 @@ from django.forms.models import inlineformset_factory
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
 class RecipeCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RecipeCreateForm, self).__init__(*args, **kwargs)
+        self.fields['num_serving'].initial = 4
     class Meta:
         model = Recipe
         # exclude = ['author', 'date_posted']
         exclude = ['author', 'ingredients', 'date_posted']
         labels = {
-            'name': 'Title'
+            'name': 'Title',
+            'num_serving': 'Serves'
         }
 
-class IngredientAddForm(forms.ModelForm):
-    class Meta:
-        model = Ingredient
-        fields = ['name']
-        labels = {
-            'name': 'Cannot find your ingredient in the list? Add it here'
-        }
+# class IngredientAddForm(forms.ModelForm):
+#     class Meta:
+#         model = Ingredient
+#         fields = ['name']
+#         labels = {
+#             'name': 'Cannot find your ingredient in the list? Add it here'
+#         }
 
 class RecipeIngredientForm(forms.ModelForm):
     class Meta:
         model = RecipeIngredient
         fields = ['ingredient', 'unit', 'amount']
+        labels = {
+            'ingredient': 'Ingredient name'
+        }
         widgets = {
             'ingredient': forms.TextInput(),
             'class': 'form-control'
@@ -36,4 +43,4 @@ class RecipeIngredientForm(forms.ModelForm):
     #     return self.cleaned_data
 
 
-RecipeIngredientFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientForm, extra=2, can_delete=False)
+RecipeIngredientFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientForm, extra=5, can_delete=False)

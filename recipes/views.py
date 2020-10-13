@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import ModelFormMixin
 from .models import User, Recipe, Ingredient, RecipeIngredient
-from .forms import RecipeCreateForm, IngredientAddForm, RecipeIngredientForm, RecipeIngredientFormSet
+from .forms import RecipeCreateForm, RecipeIngredientForm, RecipeIngredientFormSet
 
 
 
@@ -65,7 +65,15 @@ class RecipeCreateView(CreateView):
                 r_i.ingredient = Ingredient.objects.get(name=ing)
                 r_i.unit = form['unit'].value()
                 # r_i.amount = form['amount'].value()
-                r_i.amount = float(form['amount'].value())
+                r_i.amount = form['amount'].value()
+
+                # amount = form['amount'].value()
+                # if amount == '':
+                #     r_i.amount = '0.00'
+                # else:
+                #     r_i.amount = float(amount)
+
+                    # r_i.amount = float(form['amount'].value())
                 r_i.save()
 
         try:

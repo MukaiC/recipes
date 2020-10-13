@@ -9,10 +9,11 @@ UNIT_CHOICES =  [
     ('tbs', 'tbs'),
     ('tsp', 'tsp'),
     ('cup', 'cup'),
+    ('cups', 'cups'),
     ('g', 'g'),
     ('kg','kg'),
     ('ml', 'ml'),
-    ('l', 'litre')
+    ('l', 'L')
 ]
 
 # Cannot be moved to users.models.py mid-project due to dependancy issues
@@ -72,10 +73,12 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='recipeingredients')
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE, related_name='recipeingredients')
     unit = models.CharField(max_length=30, blank=True, choices=UNIT_CHOICES)
-    amount = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    amount = models.CharField(max_length=30, null=True, blank=True)
+    # amount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.ingredient} for {self.recipe} recipe"
+        return self.ingredient.name
+        # return f"{self.ingredient} for {self.recipe} recipe"
 
 # class Image(models.Model):
 #     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='image')

@@ -16,8 +16,12 @@
         <div class="ingredients-section">
           <h4>Ingredients</h4>
           <ul>
-            {% for ingredient in recipe.ingredients.all %}
-              <li>{{ ingredient|title }}</li>
+            {% for ingredient in recipe.recipeingredients.all %}
+              {% if ingredient.amount == 0.00 or ingredient.amount == '' or ingredient.amount == None %}
+                <li>{{ ingredient|title }}</li>
+              {% else %}
+                <li>{{ ingredient|title }} : {{ ingredient.amount }} {{ ingredient.unit }}</li>
+              {% endif  %}
             {% endfor %}
           </ul>
         </div>
