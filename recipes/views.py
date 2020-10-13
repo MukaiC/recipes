@@ -1,6 +1,7 @@
 # from django.conf import settings
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
@@ -21,7 +22,7 @@ class RecipesDetailView(DetailView):
     template_name = 'recipes/recipe.html'
     context_object_name = 'recipe'
 
-class RecipeCreateView(CreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = 'recipes/create.html'
     form_class = RecipeCreateForm
