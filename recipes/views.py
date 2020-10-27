@@ -109,14 +109,22 @@ def add_ingredients(request, pk):
     return render(request,'recipes/ingredients.html', {'formset': formset})
 
 
-# !!! Make sure that the user is the same as the recipe author
-class RecipeUpdateView(UpdateWithInlinesView):
+
+class RecipeUpdateView(UserPassesTestMixin, UpdateWithInlinesView):
     model = Recipe
     inlines = [RecipeIngredientInline]
     fields = ['name', 'description', 'method', 'header_image', 'num_serving']
     template_name = 'recipes/update.html'
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+    def test_func(self):
+        recipe = self.get_object()
+        if self.request.user == recipe.author:
+            return True
+        else:
+            return False
+
 
 # class RecipeUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
 #     model = Recipe

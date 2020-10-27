@@ -14,7 +14,13 @@
             <p class="border-bottom mb-4">Add new ingredients</p>
             {{ recipe_ing_formset|crispy }}
           {% else %}
-            {{ recipe_ing_formset|crispy }}
+            <!-- {{ recipe_ing_formset|crispy }} -->
+            {{ recipe_ing_formset.management_form }}
+            {% for subform in recipe_ing_formset %}
+            <div class="container mb-4"><br>
+              {{ subform|crispy }}
+            </div>
+            {% endfor %}
           {% endif %}
           </div>
       </fieldset>
