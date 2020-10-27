@@ -9,11 +9,21 @@
           {{ form|crispy }}
           <div class="container ml-15 mb-4">
           <legend class="border-bottom mb-4">Ingredients</legend>
-                  {{ recipe_ing_formset|crispy }}
+          {% if recipe_ing_updateformset %}
+            {{ recipe_ing_updateformset|crispy }}
+            <p class="border-bottom mb-4">Add new ingredients</p>
+            {{ recipe_ing_formset|crispy }}
+          {% else %}
+            {{ recipe_ing_formset|crispy }}
+          {% endif %}
           </div>
       </fieldset>
       <div class="form-group">
-        <button class="btn btn-outline-info" type="submit">Create</button>
+        {% if recipe_ing_updateformset %}
+          <button class="btn btn-outline-info" type="submit">Update</button>
+        {% else %}
+          <button class="btn btn-outline-info" type="submit">Create</button>
+        {% endif %}
       </div>
     </form>
 

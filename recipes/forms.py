@@ -42,5 +42,21 @@ class RecipeIngredientForm(forms.ModelForm):
     #         new_ingredient.save()
     #     return self.cleaned_data
 
+class RecipeIngredientUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['ingredient'].widget.attrs['disabled'] = True
+    class Meta:
+        model = RecipeIngredient
+        fields = ['ingredient', 'unit', 'amount']
+        labels = {
+            'ingredient': 'Ingredient name'
+        }
+        widgets = {
+            'class': 'form-control'
+        }
+
 
 RecipeIngredientFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientForm, extra=5, can_delete=False)
+RecipeIngredientUpdateFormSet = inlineformset_factory(Recipe, RecipeIngredient, form=RecipeIngredientUpdateForm, extra=0, can_delete=True)
+# RecipeIngredientUpdateFormSet = inlineformset_factory(Recipe, Recipe.ingredients.through, form=RecipeIngredientUpdateForm, extra=0, can_delete=True)

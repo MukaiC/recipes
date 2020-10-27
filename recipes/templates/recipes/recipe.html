@@ -7,7 +7,9 @@
   <div class="article-metadata">
     <a href="#">by {{ recipe.author }}</a>
     <small class="recipe-month">{{ recipe.month_posted }}</small><br>
-    <p>"{{ recipe.description }}"</p>
+    {% if recipe.description != '' %}
+      <p>"{{ recipe.description }}"</p>
+    {% endif %}
   </div>
 
   <div class="container">

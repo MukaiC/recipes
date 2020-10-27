@@ -1,13 +1,13 @@
 # from django.conf import settings
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from django.forms import formset_factory
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import ModelFormMixin
 from .models import User, Recipe, Ingredient, RecipeIngredient
-from .forms import RecipeCreateForm, RecipeIngredientForm, RecipeIngredientFormSet
+from .forms import RecipeCreateForm, RecipeIngredientForm, RecipeIngredientFormSet, RecipeIngredientUpdateFormSet
 
 
 
@@ -31,22 +31,12 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(RecipeCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            # context['recipe_form'] = RecipeCreateForm(self.request.POST)
             context['recipe_ing_formset'] = RecipeIngredientFormSet(self.request.POST, self.request.FILES)
         else:
-            # context['recipe_form'] = RecipeCreateForm()
             context['recipe_ing_formset'] = RecipeIngredientFormSet()
         return context
 
     def form_valid(self, form):
-        # new recipe object
-
-        # for form in formset:
-        #     ing = form['ingredient'].value()
-        #     if ing not in ingredients:
-        #         Ingredient.objects.create(name=ing)
-
-
         self.object = form.save(commit=False)
         self.object.author = self.request.user
         self.object.save()
@@ -65,16 +55,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
                 r_i.recipe = self.object
                 r_i.ingredient = Ingredient.objects.get(name=ing)
                 r_i.unit = form['unit'].value()
-                # r_i.amount = form['amount'].value()
                 r_i.amount = form['amount'].value()
-
-                # amount = form['amount'].value()
-                # if amount == '':
-                #     r_i.amount = '0.00'
-                # else:
-                #     r_i.amount = float(amount)
-
-                    # r_i.amount = float(form['amount'].value())
                 r_i.save()
 
         try:
@@ -82,18 +63,115 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
             # return super(self).form_valid(form)
         except:
             return render(self.request, 'recipes/create.html', self.get_context_data())
-        # context = self.get_context_data()
-        # # recipe_form = context['recipe_form']
-        # formset = context['recipe_ing_formset']
-        #
-        # for form in formset:
-        #     ing = form['ingredient']
-        #     if ing not in ingredients:
-        #         new_ing = Ingredient(name=ing)
-        #         # new_ing.save()
 
 
+class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Recipe
+    template_name = 'recipes/create.html'
+    form_class = RecipeCreateForm
 
+    def get_context_data(self, **kwargs):
+        context = super(RecipeUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['recipe_ing_formset'] = RecipeIngredientFormSet(self.request.POST, self.request.FILES)
+            # context['recipe_ing_updateformset'] = RecipeIngredientFormSet( self.request.POST, self.request.FILES, instance=self.object)
+            context['recipe_ing_updateformset'] = RecipeIngredientUpdateFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            context['recipe_ing_formset'] = RecipeIngredientFormSet()
+            # context['recipe_ing_updateformset'] = RecipeIngredientFormSet(instance=self.object)
+            context['recipe_ing_updateformset'] = RecipeIngredientUpdateFormSet(instance=self.object)
+
+
+            # for form in context['recipe_ing_formset']:
+            #     form['ingredient'].initial = self.object.recipeingredients.ingredient.name
+
+            # context['recipe_ing_formset'] = RecipeIngredientFormSet(queryset = self.object.recipeingredients.all(), instance = self.object)
+            # initial = [{'ingredient': obj.ingredient} for obj in self.object.recipeingredients.all()]
+            # context['recipe_ing_formset'] = RecipeIngredientFormSet(queryset = RecipeIngredient.objects.filter(recipe=self.get_object()))
+            # context['recipe_ing_formset'] = RecipeIngredientFormSet(queryset = self.get_object().recipeingredients.all())
+        return context
+
+    def form_valid(self, form):
+
+        context = self.get_context_data()
+        updateformset = context['recipe_ing_updateformset']
+        formset = context['recipe_ing_formset']
+
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+
+        if updateformset.is_valid():
+            updateformset.save()
+            # for form in updateformset:
+            #     ing = form['ingredient']
+            #     r_i = RecipeIngredient()
+            #     r_i.recipe = self.object
+            #     r_i.ingredient = ing.field['ingredient']
+            #     r_i.unit = form['unit'].value()
+            #     r_i.amount = form['amount'].value()
+            #     r_i.save()
+
+            # updateformset.save()
+            # updateformset = updateformset.save(commit=False)
+            # for obj in updateformset:
+            #     obj.save()
+
+            # if updateformset.deleted_objects:
+            #     for obj in updateformset.deleted_objects:
+            #         obj.delete()
+
+        else:
+            return render(self.request, 'recipes/create.html', self.get_context_data())
+
+
+        ingredients = [ing.name for ing in Ingredient.objects.all()]
+
+        for form in formset:
+            ing = form['ingredient'].value().lower()
+            if len(ing) > 0:
+                if ing not in ingredients:
+                    Ingredient.objects.create(name=ing)
+                r_i = RecipeIngredient()
+                r_i.recipe = self.object
+                r_i.ingredient = Ingredient.objects.get(name=ing)
+                r_i.unit = form['unit'].value()
+                r_i.amount = form['amount'].value()
+                r_i.save()
+
+        try:
+            return super(ModelFormMixin, self).form_valid(form)
+            # return super(self).form_valid(form)
+        except:
+            return render(self.request, 'recipes/create.html', self.get_context_data())
+
+
+    # def get_initial(self):
+    #     recipe_obj = self.get_object()
+    #     values = recipe_obj.recipeingredients.values()
+    #     initial = super(RecipeUpdateView, self).get_initial()
+    #     # initial = super(self).get_initial()
+    #     for i in values:
+    #         # ingredient_obj = Ingredient.objects.get(id=i["ingredient_id"])
+    #         # initial['ingredient'] = ingredient_obj.name
+    #         initial['ingredient'] = Ingredient.objects.get(pk=ingredient_id)
+    # #     # recipe_ing= self.get_object().recipeingredients.all()
+    # #     recipe_ing_obj = RecipeIngredient.objects.filter(recipe=self.get_object())
+    # #     for obj in recipe_ing_obj:
+    # #         initial['ingredient'] = obj.ingredient.name
+    # #         initial['unit'] = obj.unit
+    # #         initial['amount'] = obj.amount
+    # #     # for i in recipe_ing:
+    # #     #     # initial['ingredient'] =
+    # #     #     pass
+    #     return initial
+
+    def test_func(self):
+        recipe = self.get_object()
+        if self.request.user == recipe.author:
+            return True
+        else:
+            return False
 
 # def create_recipe(request):
 #     """Function based view to create a new recipe"""
