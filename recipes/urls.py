@@ -12,6 +12,7 @@ urlpatterns = [
     path('recipe/new/', RecipeCreateView.as_view(), name='create'),
     # path('recipe/new/', views.create_recipe, name='create'),
     path('recipe/<int:pk>/update/', RecipeUpdateView.as_view(), name='update'),
+    path('recipe/<int:pk>/update/ingredients', views.add_ingredients, name='add_ingredients'),
     path('about/', views.about, name='about'),
     path('search/', views.search, name='search'),
 ]

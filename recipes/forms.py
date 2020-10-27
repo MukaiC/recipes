@@ -2,6 +2,7 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from .models import User, Recipe, Ingredient, RecipeIngredient
 
+
 class RecipeCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RecipeCreateForm, self).__init__(*args, **kwargs)
@@ -44,8 +45,8 @@ class RecipeIngredientForm(forms.ModelForm):
 
 class RecipeIngredientUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['ingredient'].widget.attrs['disabled'] = True
+        super(RecipeIngredientUpdateForm, self).__init__(*args, **kwargs)
+        # self.fields['ingredient'].widget.attrs['disabled'] = True
     class Meta:
         model = RecipeIngredient
         fields = ['ingredient', 'unit', 'amount']

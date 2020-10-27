@@ -1,0 +1,26 @@
+{% extends "recipes/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="container mb-4">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        <legend class="border-bottom mb-4">Update Recipe</legend>
+          {{ form|crispy }}
+          <div class="container ml-15 mb-4">
+          <legend class="border-bottom mb-4">Ingredients</legend>
+            {% for formset in inlines %}
+              {{ formset.management_form }}
+              {% for subform in formset %}
+                <h4>{{ subform.instance.ingredient }}</h4>
+                {{ subform|crispy }}
+              {% endfor %}
+            {% endfor %}
+          </div>
+      <button class="btn btn-outline-info" type="submit">Update</button>
+    </form>
+  </div>
+  <div class="container ml-15 mb-4">
+    <a href="#">Add new ingredients</a>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "recipes/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="container mb-4">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        <legend class="border-bottom mb-4">Add Ingredients</legend>
+          <!-- {{ formset|crispy }} -->
+
+          {{ formset.management_form }}
+          {% for subform in formset %}
+          <div class="container mb-4"><br>
+            {{ subform|crispy }}
+          </div>
+          {% endfor %}
+
+      <button class="btn btn-outline-info" type="submit">Add</button>
+    </form>
+  </div>
+{% endblock %}

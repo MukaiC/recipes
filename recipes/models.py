@@ -84,6 +84,8 @@ class RecipeIngredient(models.Model):
         return self.ingredient.name
         # return f"{self.ingredient} for {self.recipe} recipe"
 
+    def get_absolute_url(self):
+        return reverse('recipes:update', kwargs={'pk':self.recipe})
 # class Image(models.Model):
 #     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='image')
 #     image = models.ImageField(upload_to='images', blank=True, )
