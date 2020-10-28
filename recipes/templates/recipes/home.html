@@ -15,7 +15,7 @@
           <a class="mr-2" href="#">{{ recipe.author }}</a>
           <small class="text-muted">{{ recipe.date_posted }}</small>
         </div>
-        <h2><a href="{% url 'recipes:recipe' recipe.id %}">{{ recipe.name }}</a></h2>
+        <h2><a href="{% url 'recipes:recipe' recipe.id %}">{{ recipe.name|title }}</a></h2>
         <p class="article-content">{{ recipe.description }}</p>
       </div>
     </article>
