@@ -32,7 +32,7 @@ class Recipe(models.Model):
     description = models.CharField(max_length=200, blank=True)
     method = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    header_image = models.ImageField(null=True, blank=True, upload_to='images/')
+    header_image = models.ImageField(null=True, blank=True, default='default_food.jpg', upload_to='images/')
     num_serving = models.IntegerField(null=True)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     date_posted = models.DateTimeField(default=timezone.now)
@@ -67,12 +67,13 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        img = Image.open(self.header_image.path)
-        # if the image size is bigger than 300px, shrink it to output_size
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.header_image.path)
+        if self.header_image:
+            img = Image.open(self.header_image.path)
+            # if the image size is bigger than 300px, shrink it to output_size
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.header_image.path)
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
