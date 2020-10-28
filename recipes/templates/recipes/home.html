@@ -10,6 +10,9 @@
 
   {% for recipe in recipes %}
     <article class="media content-section">
+      {% if recipe.header_image %}
+      <img class="rounded-circle article-img" src="{{ recipe.header_image.url }}">
+      {% endif %}
       <div class="media-body">
         <div class="article-metadata">
           <a class="mr-2" href="#">{{ recipe.author }}</a>

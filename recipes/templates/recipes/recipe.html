@@ -14,7 +14,10 @@
       {% if recipe.description != '' %}
         <p>"{{ recipe.description }}"</p>
       {% endif %}<br>
-    </div>
+      {% if recipe.header_image %}
+        <img class="detail-img" src="{{ recipe.header_image.url }}">
+      {% endif %}
+    </div><br>
   </div>
 
   <div class="container">
