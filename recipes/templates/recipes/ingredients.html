@@ -2,19 +2,24 @@
 {% load crispy_forms_tags %}
 {% block content %}
   <div class="container mb-4">
-    <form method="post" enctype="multipart/form-data">
+    <form id="form-container" method="post" enctype="multipart/form-data">
       {% csrf_token %}
         <legend class="border-bottom mb-4">Add Ingredients</legend>
-          <!-- {{ formset|crispy }} -->
 
           {{ formset.management_form }}
           {% for subform in formset %}
-          <div class="container mb-4"><br>
+          <div class="ingredient-form container mb-4"><br>
             {{ subform|crispy }}
           </div>
           {% endfor %}
-
-      <button class="btn btn-outline-info" type="submit">Add</button>
+      <button id="add-form" class="btn btn-outline-info btn-sm right" type="button" disabled >Add More</button><br>
+      <button class="btn btn-outline-info" type="submit">Confirm</button>
     </form>
   </div>
+{% endblock %}
+
+{% load static %}
+{% block script %}
+  <script type="text/javascript" src="{% static 'recipes/ingredients.js' %}"></script>
+
 {% endblock %}
