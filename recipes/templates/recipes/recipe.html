@@ -6,7 +6,11 @@
   <div class="container">
     <h2>{{ recipe.name|title }}</h2>
     {% if user.is_authenticated and user == recipe.author %}
-      <a class="btn btn-outline-info right" href="{% url 'recipes:update' recipe.id %}">Update</a>
+      <div class="">
+        <a class="btn btn-outline-danger btn-sm right" href="{% url 'recipes:delete' recipe.id %}">Delete</a>
+        <a class="btn btn-outline-info btn-sm mr-1 right" href="{% url 'recipes:update' recipe.id %}">Update</a>
+
+      </div>
     {% endif %}
     <div class="article-metadata">
       <a href="#">by {{ recipe.author }}</a>

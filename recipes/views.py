@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
 from .models import User, Recipe, Ingredient, RecipeIngredient
 from .forms import RecipeCreateForm, RecipeIngredientForm,  RecipeIngredientFormSet, RecipeIngredientUpdateForm
@@ -110,7 +110,7 @@ def add_ingredients(request, pk):
 
 
 
-class RecipeUpdateView(UserPassesTestMixin, UpdateWithInlinesView):
+class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateWithInlinesView):
     model = Recipe
     inlines = [RecipeIngredientInline]
     fields = ['name', 'description', 'method', 'header_image', 'num_serving']
@@ -125,6 +125,17 @@ class RecipeUpdateView(UserPassesTestMixin, UpdateWithInlinesView):
         else:
             return False
 
+
+class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Recipe
+    success_url = '/'
+
+    def test_func(self):
+        recipe = self.get_object()
+        if self.request.user == recipe.author:
+            return True
+        else:
+            return False
 
 
 def search(request):
