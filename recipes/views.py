@@ -1,5 +1,4 @@
 # from django.conf import settings
-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from django.forms import formset_factory
@@ -137,16 +136,26 @@ class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         else:
             return False
 
-
 def search(request):
     results = []
     # Get the search input
     q = request.GET.get('q')
-    # Get recipes
-    recipes = Recipe.objects.all()
-    for recipe in recipes:
-        if q.lower() in recipe.name.lower():
-            results.append(recipe)
+    keywords = q.split()
+    for keyword in keywords:
+        recipes = Recipe.objects.filter(name__icontains=keyword)
+        list_recipes = list(recipes)
+        # Append recipe to results if it does not already contain the same recipe
+        [results.append(recipe) for recipe in list_recipes if recipe not in results]
+
+        # Get ingredients that contain the keyword
+        ingredients = list(Ingredient.objects.filter(name__icontains=keyword))
+
+        # Get recipes that include these ingredients
+        for ing in ingredients:
+            ing_recipes = list(ing.recipes.all())
+            # Append the recipes to results if not already in the results
+            [results.append(recipe) for recipe in ing_recipes if recipe not in results]
+
     context = {
         'results': True,
         'search_for': q,
@@ -154,6 +163,23 @@ def search(request):
     }
     # messages.success(request, 'Your search result.')
     return render(request, 'recipes/home.html', context)
+
+# def search(request):
+#     results = []
+#     # Get the search input
+#     q = request.GET.get('q')
+#     # Get recipes
+#     recipes = Recipe.objects.all()
+#     for recipe in recipes:
+#         if q.lower() in recipe.name.lower():
+#             results.append(recipe)
+#     context = {
+#         'results': True,
+#         'search_for': q,
+#         'recipes': [recipe.serialize_simple() for recipe in results],
+#     }
+#     # messages.success(request, 'Your search result.')
+#     return render(request, 'recipes/home.html', context)
 
 def about(request):
     return render(request, 'recipes/about.html', {'title': 'About'})

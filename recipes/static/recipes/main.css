@@ -1,3 +1,6 @@
+input[type="search"] {
+    font-family: FontAwesome;
+}
 
 a {
   color: #696969 ;
