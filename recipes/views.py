@@ -159,27 +159,12 @@ def search(request):
     context = {
         'results': True,
         'search_for': q,
-        'recipes': [recipe.serialize_simple() for recipe in results],
+        'recipes': results,
+        # 'recipes': [recipe.serialize_simple() for recipe in results],
     }
     # messages.success(request, 'Your search result.')
     return render(request, 'recipes/home.html', context)
 
-# def search(request):
-#     results = []
-#     # Get the search input
-#     q = request.GET.get('q')
-#     # Get recipes
-#     recipes = Recipe.objects.all()
-#     for recipe in recipes:
-#         if q.lower() in recipe.name.lower():
-#             results.append(recipe)
-#     context = {
-#         'results': True,
-#         'search_for': q,
-#         'recipes': [recipe.serialize_simple() for recipe in results],
-#     }
-#     # messages.success(request, 'Your search result.')
-#     return render(request, 'recipes/home.html', context)
 
 def about(request):
     return render(request, 'recipes/about.html', {'title': 'About'})

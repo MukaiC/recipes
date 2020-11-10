@@ -38,26 +38,26 @@ class Recipe(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
 
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'method': self.method,
-            'author': self.author.username,
-            'serves': self.num_serving,
-            'month_posted':self.date_posted.strftime("%B %Y"),
-            'ingredients': [ingredient.name for ingredient in self.ingredients.all()]
-        }
-
-    def serialize_simple(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'author': self.author.username,
-            'date_posted':self.date_posted.strftime("%b %d %Y"),
-        }
+    # def serialize(self):
+    #     return {
+    #         'id': self.id,
+    #         'name': self.name,
+    #         'description': self.description,
+    #         'method': self.method,
+    #         'author': self.author.username,
+    #         'serves': self.num_serving,
+    #         'month_posted':self.date_posted.strftime("%B %Y"),
+    #         'ingredients': [ingredient.name for ingredient in self.ingredients.all()]
+    #     }
+    #
+    # def serialize_simple(self):
+    #     return {
+    #         'id': self.id,
+    #         'name': self.name,
+    #         'description': self.description,
+    #         'author': self.author.username,
+    #         'date_posted':self.date_posted.strftime("%b %d %Y"),
+    #     }
 
     def __str__(self):
         return self.name
@@ -97,9 +97,3 @@ class RecipeIngredient(models.Model):
 
     def get_absolute_url(self):
         return reverse('recipes:update', kwargs={'pk':self.recipe})
-# class Image(models.Model):
-#     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name='image')
-#     image = models.ImageField(upload_to='images', blank=True, )
-#
-#     def __str__(self):
-#         return self.recipe
