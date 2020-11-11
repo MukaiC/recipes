@@ -8,6 +8,12 @@
     </div>
   {% endif %}
 
+  {% if author %}
+    <div class="container search-section">
+      <h1>Recipes by {{ author.username }}</h1>
+    </div>
+  {% endif %}
+
   {% for recipe in recipes %}
     <article class="media content-section">
       {% if recipe.header_image %}
@@ -15,7 +21,7 @@
       {% endif %}
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="#">{{ recipe.author }}</a>
+          <a class="mr-2" href="{% url 'recipes:author' recipe.author.pk %}">{{ recipe.author }}</a>
           <small class="text-muted">{{ recipe.date_posted }}</small>
         </div>
         <h2><a href="{% url 'recipes:recipe' recipe.id %}">{{ recipe.name|title }}</a></h2>

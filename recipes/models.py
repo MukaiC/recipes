@@ -32,7 +32,7 @@ class Recipe(models.Model):
     description = models.CharField(max_length=200, blank=True)
     method = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    header_image = models.ImageField(null=True, blank=True, default='default_food.jpg', upload_to='images/')
+    header_image = models.ImageField(null=True, blank=True, default='default_food.png', upload_to='images/')
     num_serving = models.IntegerField(null=True)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     date_posted = models.DateTimeField(default=timezone.now)

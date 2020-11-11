@@ -2,7 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from django.forms import formset_factory
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
@@ -18,6 +18,20 @@ class RecipesListView(ListView):
     template_name = 'recipes/home.html'
     context_object_name = 'recipes'
     ordering = ['-date_posted']
+
+class AuthorListView(ListView):
+    model = Recipe
+    template_name = 'recipes/home.html'
+    context_object_name = 'recipes'
+
+    def get_queryset(self):
+        return Recipe.objects.filter(author=self.kwargs['pk']).order_by('-date_posted')
+
+    def get_context_data(self, **kwargs):
+        # Add the author in the context to use in the template
+        context = super().get_context_data(**kwargs)
+        context['author'] = get_object_or_404(User, id=self.kwargs['pk'])
+        return context
 
 class RecipesDetailView(DetailView):
     model = Recipe
