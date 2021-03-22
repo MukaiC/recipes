@@ -20,7 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '5y9^sjggb6p)(3!_hw9!%n!1pjn9+q@bs=za75l!0h(5sr_s!%'
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -131,7 +137,9 @@ LOGIN_URL = 'login'
 
 # LOGOUT_REDIRECT_URL = 'recipes:index'
 
-try:
-    from .local_settings import *
-except ImportError:
-    raise Exception("A local_settings.py is required to run this project")
+
+# Use to store information such as API keys
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     raise Exception("A local_settings.py is required to run this project")

@@ -26,6 +26,10 @@ ul {
   list-style-type: none;
 }
 
+.dropdown-item {
+  color: grey;
+}
+
 .vertical-line {
   border-right: 1px dotted #BDB76B;
   height: 400px;

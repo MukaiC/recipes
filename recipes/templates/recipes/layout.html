@@ -68,9 +68,23 @@
 
           <div class="search-section">
             <form action="{% url 'recipes:search' %}" method="get" class="form-inline">
-              <input class="form-control mr-2 fa" name="q" type="text" placeholder="&#xf002 Recipe, Ingredients..." aria-label="Recipe search">
-              <!-- <i class="fa fa-search" aria-hidden="true"></i> -->
 
+              <input class="form-control mr-2" name="q" type="text" placeholder="Recipe, Ingredients..." aria-label="Recipe search">
+                <!-- <input class="form-control mr-2 fa" name="q" type="text" placeholder="&#xf002 Recipe, Ingredients..." aria-label="Recipe search"> -->
+
+              <div class="btn-group">
+                  <button type="submit" class="btn btn-sm btn-outline-success">Search</button>
+                  <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu">
+                    <input class="dropdown-item" type="submit" name="own_recipes" value="Search own recipes">
+              </div>
+
+
+
+              <!-- <button class="btn btn-sm btn-outline-success" type="submit" >Search</button>
+              <button class="btn btn-sm btn-outline-info right" type="submit" name="own_recipes">Search own recipes</button> -->
             </form>
           </div>
 
