@@ -4,5 +4,6 @@ venv/
 db.sqlite3
 *.log
 *.pot
-media
+media/images/
+media/profile_pics/
 local_settings.py
